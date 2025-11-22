@@ -1,0 +1,90 @@
+{% extends "store/base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">Finalizar Compra</h1>
+
+    <div class="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
+        <!-- Order Summary -->
+        <div class="mt-10 lg:mt-0 order-2">
+            <h2 class="text-lg font-medium text-gray-900">Resumen del Pedido</h2>
+            <div class="mt-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+                <ul role="list" class="divide-y divide-gray-200">
+                    {% for item in cart %}
+                    <li class="flex py-6 px-4 sm:px-6">
+                        <div class="flex-shrink-0">
+                            {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}"
+                                class="w-20 h-20 rounded-md object-center object-cover">
+                            {% else %}
+                            <div
+                                class="w-20 h-20 rounded-md bg-gray-200 flex items-center justify-center text-gray-500 text-xs">
+                                N/A</div>
+                            {% endif %}
+                        </div>
+                        <div class="ml-6 flex-1 flex flex-col">
+                            <div class="flex">
+                                <div class="min-w-0 flex-1">
+                                    <h4 class="text-sm">
+                                        <a href="{{ item.product.get_absolute_url }}"
+                                            class="font-medium text-gray-700 hover:text-gray-800">
+                                            {{ item.product.name }}
+                                        </a>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="flex-1 pt-2 flex items-end justify-between">
+                                <p class="mt-1 text-sm font-medium text-gray-900">${{ item.price }} x {{ item.quantity
+                                    }}</p>
+                                <p class="mt-1 text-sm font-bold text-gray-900">${{ item.total_price }}</p>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <dl class="border-t border-gray-200 py-6 px-4 space-y-6 sm:px-6">
+                    <div class="flex items-center justify-between border-t border-gray-200 pt-6">
+                        <dt class="text-base font-medium">Total</dt>
+                        <dd class="text-base font-medium text-gray-900">${{ cart.get_total_price }}</dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+
+        <!-- Checkout Form -->
+        <div class="order-1">
+            <h2 class="text-lg font-medium text-gray-900">Información de Envío</h2>
+            <form action="." method="post" class="mt-4">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
+                    {% for field in form %}
+                    <div class="{% if field.name == 'address' or field.name == 'email' %}sm:col-span-2{% endif %}">
+                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            {{ field.label }}
+                        </label>
+                        <div class="mt-1">
+                            <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}"
+                                id="{{ field.id_for_label }}"
+                                class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2 border"
+                                required>
+                        </div>
+                        {% if field.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ field.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mt-10 border-t border-gray-200 pt-6">
+                    <button type="submit"
+                        class="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500">
+                        Confirmar Pedido
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
