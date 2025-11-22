@@ -1,0 +1,38 @@
+useCaseDiagram
+    actor "Usuario Visitante" as Visitor
+    actor "Usuario Registrado" as User
+    actor "Administrador" as Admin
+
+    package "Sistema de Carrito de Compras" {
+        usecase "Registrarse" as UC1
+        usecase "Iniciar Sesión" as UC2
+        usecase "Buscar Productos" as UC3
+        usecase "Ver Detalle de Producto" as UC4
+        usecase "Agregar al Carrito" as UC5
+        usecase "Gestionar Carrito" as UC6
+        usecase "Realizar Compra" as UC7
+        usecase "Ver Historial de Compras" as UC8
+        usecase "Gestionar Productos" as UC9
+        usecase "Gestionar Órdenes" as UC10
+    }
+
+    Visitor --> UC1
+    Visitor --> UC2
+    Visitor --> UC3
+    Visitor --> UC4
+    Visitor --> UC5
+    Visitor --> UC6
+
+    User --> UC2
+    User --> UC3
+    User --> UC4
+    User --> UC5
+    User --> UC6
+    User --> UC7
+    User --> UC8
+
+    Admin --> UC2
+    Admin --> UC9
+    Admin --> UC10
+
+    UC7 ..> UC2 : <<include>>

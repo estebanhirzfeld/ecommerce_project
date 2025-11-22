@@ -1,0 +1,63 @@
+classDiagram
+    class User {
+        +username: String
+        +email: String
+        +password: String
+        +register()
+        +login()
+    }
+
+    class Profile {
+        +user: User
+        +address: String
+        +phone: String
+    }
+
+    class Category {
+        +name: String
+        +slug: String
+        +get_absolute_url()
+    }
+
+    class Product {
+        +category: Category
+        +name: String
+        +slug: String
+        +image: Image
+        +description: Text
+        +price: Decimal
+        +available: Boolean
+        +get_absolute_url()
+    }
+
+    class Cart {
+        +session: Session
+        +add(product, quantity)
+        +remove(product)
+        +clear()
+        +get_total_price()
+    }
+
+    class Order {
+        +user: User
+        +first_name: String
+        +last_name: String
+        +email: String
+        +address: String
+        +paid: Boolean
+        +get_total_cost()
+    }
+
+    class OrderItem {
+        +order: Order
+        +product: Product
+        +price: Decimal
+        +quantity: Integer
+        +get_cost()
+    }
+
+    User "1" -- "1" Profile
+    Category "1" -- "*" Product
+    Order "1" -- "*" OrderItem
+    Product "1" -- "*" OrderItem
+    User "1" -- "*" Order

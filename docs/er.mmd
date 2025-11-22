@@ -1,0 +1,55 @@
+erDiagram
+    AUTH_USER ||--o{ PROFILE : has
+    AUTH_USER ||--o{ ORDER : places
+    CATEGORY ||--o{ PRODUCT : contains
+    PRODUCT ||--o{ ORDER_ITEM : included_in
+    ORDER ||--o{ ORDER_ITEM : contains
+
+    AUTH_USER {
+        int id PK
+        string username
+        string email
+        string password
+    }
+
+    PROFILE {
+        int id PK
+        int user_id FK
+        string address
+        string phone
+    }
+
+    CATEGORY {
+        int id PK
+        string name
+        string slug
+    }
+
+    PRODUCT {
+        int id PK
+        int category_id FK
+        string name
+        string slug
+        decimal price
+        text description
+        boolean available
+    }
+
+    ORDER {
+        int id PK
+        int user_id FK
+        string first_name
+        string last_name
+        string email
+        string address
+        boolean paid
+        datetime created
+    }
+
+    ORDER_ITEM {
+        int id PK
+        int order_id FK
+        int product_id FK
+        decimal price
+        int quantity
+    }

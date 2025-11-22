@@ -1,0 +1,35 @@
+sequenceDiagram
+    participant User
+    participant View
+    participant Cart
+    participant Database
+
+    Note over User, Database: Agregar Producto al Carrito
+    User->>View: POST /cart/add/{id}/
+    View->>Database: Product.objects.get(id=id)
+    Database-->>View: Product Instance
+    View->>Cart: cart.add(product)
+    Cart-->>View: Updated Cart
+    View-->>User: Redirect to Cart Detail
+
+    Note over User, Database: Realizar Compra
+    User->>View: POST /orders/create/
+    View->>Cart: Get Cart Items
+    View->>Database: Order.objects.create()
+    loop For each item in Cart
+        View->>Database: OrderItem.objects.create()
+    end
+    View->>Cart: cart.clear()
+    View-->>User: Render Order Created
+
+    Note over User, Database: Login
+    User->>View: POST /users/login/
+    View->>Database: authenticate(username, password)
+    alt Valid Credentials
+        Database-->>View: User Object
+        View->>View: login(request, user)
+        View-->>User: Redirect to Home
+    else Invalid Credentials
+        Database-->>View: None
+        View-->>User: Show Error
+    end

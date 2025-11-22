@@ -1,0 +1,26 @@
+{% extends "store/base.html" %}
+
+{% block title %}Mi Perfil{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold mb-6">Mi Perfil</h1>
+    <form method="post" action=".">
+        {% csrf_token %}
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-4">Datos Personales</h2>
+            {{ user_form.as_p }}
+        </div>
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-4">Información Adicional</h2>
+            {{ profile_form.as_p }}
+        </div>
+        <button type="submit" class="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700">
+            Guardar Cambios
+        </button>
+    </form>
+    <div class="mt-8 border-t pt-6">
+        <a href="{% url 'users:order_history' %}" class="text-blue-600 hover:underline">Ver Historial de Compras</a>
+    </div>
+</div>
+{% endblock %}
