@@ -47,7 +47,9 @@
                 <td>
                     <a href="{% url 'custom_admin:order_detail' order.id %}" class="btn btn-primary"
                         style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">View</a>
-                    <a href="{% url 'custom_admin:order_edit' order.id %}" class="btn btn-primary"
+                    <a href="{% url 'custom_admin:admin_order_pdf' order.id %}" class="btn btn-secondary"
+                        style="padding: 0.25rem 0.5rem; font-size: 0.875rem; background-color: #6c757d;">PDF</a>
+                    <a href="{% url 'custom_admin:order_update' order.id %}" class="btn btn-primary"
                         style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">Edit</a>
                 </td>
             </tr>

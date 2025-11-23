@@ -10,6 +10,9 @@ from django.contrib.auth.models import User
 from store.models import Product
 from orders.models import Order
 from .forms import ProductForm, UserForm, OrderForm
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+import weasyprint
 
 def admin_login(request):
     if request.user.is_authenticated and request.user.is_staff:
@@ -162,3 +165,14 @@ class OrderUpdateView(UpdateView):
     form_class = OrderForm
     template_name = 'custom_admin/order/form.html'
     success_url = reverse_lazy('custom_admin:order_list')
+
+@staff_member_required
+def admin_order_pdf(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    html = render_to_string('custom_admin/order/pdf.html',
+                            {'order': order})
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'filename=order_{order.id}.pdf'
+    weasyprint.HTML(string=html).write_pdf(response,
+                                           stylesheets=[weasyprint.CSS(string='body { font-family: serif}')])
+    return response
