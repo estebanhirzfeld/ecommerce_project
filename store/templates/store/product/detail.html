@@ -9,8 +9,7 @@
         <!-- Product Image -->
         <div class="md:w-1/2 bg-gray-100">
             {% if product.image %}
-            <img src="{{ product.image.url }}" alt="{{ product.name }}"
-                class="w-full h-full object-cover max-h-[500px]">
+            <img src="{{ product.image }}" alt="{{ product.name }}" class="w-full h-full object-cover max-h-[500px]">
             {% else %}
             <div class="flex items-center justify-center h-96 text-gray-400">
                 <svg class="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24">

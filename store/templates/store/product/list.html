@@ -50,7 +50,7 @@
                 <a href="{{ product.get_absolute_url }}">
                     <div class="h-48 bg-gray-200 relative overflow-hidden group">
                         {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}"
+                        <img src="{{ product.image }}" alt="{{ product.name }}"
                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                         {% else %}
                         <div class="flex items-center justify-center h-full text-gray-400">
