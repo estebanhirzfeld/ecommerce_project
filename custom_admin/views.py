@@ -19,20 +19,57 @@ def admin_login(request):
 @staff_member_required
 def dashboard(request):
     total_orders = Order.objects.count()
+    
+    # Revenue calculations
     total_revenue = Order.objects.filter(paid=True).aggregate(Sum('items__price'))['items__price__sum'] or 0
-    total_revenue = "{:.2f}".format(total_revenue)
+    potential_revenue = Order.objects.filter(paid=False).aggregate(Sum('items__price'))['items__price__sum'] or 0
+    
+    # Formatting
+    total_revenue_fmt = "{:.2f}".format(total_revenue)
+    potential_revenue_fmt = "{:.2f}".format(potential_revenue)
+    
     total_products = Product.objects.count()
     total_users = User.objects.count()
     
-    # Simple data for charts (last 5 orders)
+    # Recent orders
     recent_orders = Order.objects.order_by('-created')[:5]
+    
+    # Chart Data (Last 30 days)
+    from django.utils import timezone
+    from datetime import timedelta
+    import json
+    
+    today = timezone.now().date()
+    dates = []
+    total_sales_data = []
+    paid_sales_data = []
+    
+    for i in range(29, -1, -1):
+        date = today - timedelta(days=i)
+        date_str = date.strftime('%Y-%m-%d')
+        dates.append(date.strftime('%b %d'))
+        
+        # Filter orders for this day
+        orders_day = Order.objects.filter(created__date=date)
+        
+        # Total sales for the day (paid + unpaid)
+        day_total = orders_day.aggregate(Sum('items__price'))['items__price__sum'] or 0
+        total_sales_data.append(float(day_total))
+        
+        # Paid sales for the day
+        day_paid = orders_day.filter(paid=True).aggregate(Sum('items__price'))['items__price__sum'] or 0
+        paid_sales_data.append(float(day_paid))
     
     context = {
         'total_orders': total_orders,
-        'total_revenue': total_revenue,
+        'total_revenue': total_revenue_fmt,
+        'potential_revenue': potential_revenue_fmt,
         'total_products': total_products,
         'total_users': total_users,
         'recent_orders': recent_orders,
+        'chart_labels': json.dumps(dates),
+        'chart_total_sales': json.dumps(total_sales_data),
+        'chart_paid_sales': json.dumps(paid_sales_data),
     }
     return render(request, 'custom_admin/dashboard.html', context)
 

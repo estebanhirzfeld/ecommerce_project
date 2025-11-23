@@ -17,6 +17,10 @@
         <div class="stat-label">Total Revenue</div>
     </div>
     <div class="stat-card">
+        <div class="stat-value">${{ potential_revenue }}</div>
+        <div class="stat-label">Potential Revenue</div>
+    </div>
+    <div class="stat-card">
         <div class="stat-value">{{ total_products }}</div>
         <div class="stat-label">Products</div>
     </div>
@@ -75,19 +79,45 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('salesChart').getContext('2d');
+    const chartLabels = JSON.parse('{{ chart_labels|safe }}');
+    const totalSalesData = JSON.parse('{{ chart_total_sales|safe }}');
+    const paidSalesData = JSON.parse('{{ chart_paid_sales|safe }}');
+
     const salesChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], // Placeholder data
-            datasets: [{
-                label: 'Sales ($)',
-                data: [1200, 1900, 3000, 5000, 2300, 3400], // Placeholder data
-                borderColor: '#4f46e5',
-                tension: 0.1
-            }]
+            labels: chartLabels,
+            datasets: [
+                {
+                    label: 'Total Sales ($)',
+                    data: totalSalesData,
+                    borderColor: '#607d8b', // Greyed blue
+                    backgroundColor: 'rgba(96, 125, 139, 0.1)',
+                    tension: 0.1,
+                    fill: true
+                },
+                {
+                    label: 'Paid Sales ($)',
+                    data: paidSalesData,
+                    borderColor: '#10b981', // Green
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    tension: 0.1,
+                    fill: true
+                }
+            ]
         },
         options: {
             responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            }
         }
     });
 </script>
