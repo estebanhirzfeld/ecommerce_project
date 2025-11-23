@@ -1,0 +1,76 @@
+{% extends "custom_admin/base.html" %}
+
+{% block title %}Orders - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h2>Orders</h2>
+</div>
+
+<div class="card">
+    <div style="margin-bottom: 1.5rem; display: flex; gap: 1rem;">
+        <a href="?paid=all" class="btn btn-primary"
+            style="background-color: {% if not request.GET.paid or request.GET.paid == 'all' %}var(--primary-color){% else %}#9ca3af{% endif %};">All</a>
+        <a href="?paid=true" class="btn btn-primary"
+            style="background-color: {% if request.GET.paid == 'true' %}var(--primary-color){% else %}#9ca3af{% endif %};">Paid</a>
+        <a href="?paid=false" class="btn btn-primary"
+            style="background-color: {% if request.GET.paid == 'false' %}var(--primary-color){% else %}#9ca3af{% endif %};">Unpaid</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Email</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Paid</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>#{{ order.id }}</td>
+                <td>{{ order.first_name }} {{ order.last_name }}</td>
+                <td>{{ order.email }}</td>
+                <td>{{ order.created|date:"M d, Y" }}</td>
+                <td>${{ order.get_total_cost }}</td>
+                <td>
+                    {% if order.paid %}
+                    <span style="color: var(--success);">Yes</span>
+                    {% else %}
+                    <span style="color: var(--danger);">No</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'custom_admin:order_detail' order.id %}" class="btn btn-primary"
+                        style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">View</a>
+                    <a href="{% url 'custom_admin:order_edit' order.id %}" class="btn btn-primary"
+                        style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">Edit</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" style="text-align: center;">No orders found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if is_paginated %}
+    <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 0.5rem;">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.paid %}&paid={{ request.GET.paid }}{% endif %}"
+            class="btn btn-primary">Previous</a>
+        {% endif %}
+        <span style="padding: 0.5rem;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if request.GET.paid %}&paid={{ request.GET.paid }}{% endif %}"
+            class="btn btn-primary">Next</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

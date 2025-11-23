@@ -1,0 +1,20 @@
+{% extends "custom_admin/base.html" %}
+
+{% block title %}Delete User - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h2>Delete User</h2>
+    <a href="{% url 'custom_admin:user_list' %}" class="btn btn-primary">Back to List</a>
+</div>
+
+<div class="card">
+    <p>Are you sure you want to delete the user "<strong>{{ object.username }}</strong>"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+        <a href="{% url 'custom_admin:user_list' %}" class="btn btn-primary"
+            style="background-color: #6b7280;">Cancel</a>
+    </form>
+</div>
+{% endblock %}

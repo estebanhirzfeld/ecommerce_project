@@ -1,0 +1,74 @@
+{% extends "custom_admin/base.html" %}
+
+{% block title %}Users - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h2>Users</h2>
+</div>
+
+<div class="card">
+    <form method="get" style="margin-bottom: 1.5rem; display: flex; gap: 1rem;">
+        <input type="text" name="search" placeholder="Search users..." value="{{ request.GET.search }}">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Staff Status</th>
+                <th>Active</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    {% if user.is_staff %}
+                    <span style="color: var(--success);">Yes</span>
+                    {% else %}
+                    <span style="color: var(--danger);">No</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if user.is_active %}
+                    <span style="color: var(--success);">Yes</span>
+                    {% else %}
+                    <span style="color: var(--danger);">No</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'custom_admin:user_edit' user.id %}" class="btn btn-primary"
+                        style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">Edit</a>
+                    <a href="{% url 'custom_admin:user_delete' user.id %}" class="btn btn-danger"
+                        style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align: center;">No users found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if is_paginated %}
+    <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 0.5rem;">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+            class="btn btn-primary">Previous</a>
+        {% endif %}
+        <span style="padding: 0.5rem;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+            class="btn btn-primary">Next</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

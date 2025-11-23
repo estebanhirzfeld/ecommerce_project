@@ -1,0 +1,94 @@
+{% extends "custom_admin/base.html" %}
+
+{% block title %}Dashboard - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h2>Dashboard</h2>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-value">{{ total_orders }}</div>
+        <div class="stat-label">Total Orders</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">${{ total_revenue }}</div>
+        <div class="stat-label">Total Revenue</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ total_products }}</div>
+        <div class="stat-label">Products</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ total_users }}</div>
+        <div class="stat-label">Users</div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Recent Orders</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in recent_orders %}
+            <tr>
+                <td>#{{ order.id }}</td>
+                <td>{{ order.first_name }} {{ order.last_name }}</td>
+                <td>{{ order.created|date:"M d, Y" }}</td>
+                <td>${{ order.get_total_cost }}</td>
+                <td>
+                    {% if order.paid %}
+                    <span style="color: var(--success);">Paid</span>
+                    {% else %}
+                    <span style="color: var(--danger);">Unpaid</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'custom_admin:order_detail' order.id %}" class="btn btn-primary"
+                        style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">View</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center;">No recent orders.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="card">
+    <h3>Sales Overview</h3>
+    <canvas id="salesChart" width="400" height="100"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    const salesChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], // Placeholder data
+            datasets: [{
+                label: 'Sales ($)',
+                data: [1200, 1900, 3000, 5000, 2300, 3400], // Placeholder data
+                borderColor: '#4f46e5',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+        }
+    });
+</script>
+{% endblock %}

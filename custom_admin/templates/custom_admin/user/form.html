@@ -1,0 +1,31 @@
+{% extends "custom_admin/base.html" %}
+
+{% block title %}Edit User - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h2>Edit User: {{ form.instance.username }}</h2>
+    <a href="{% url 'custom_admin:user_list' %}" class="btn btn-primary">Back to List</a>
+</div>
+
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+            <small style="color: #6b7280;">{{ field.help_text }}</small>
+            {% endif %}
+            {% if field.errors %}
+            <div style="color: red; font-size: 0.875rem; margin-top: 0.25rem;">
+                {{ field.errors }}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+{% endblock %}
