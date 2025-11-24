@@ -1,6 +1,10 @@
 asgiref==3.11.0
 Django==5.2.8
-pillow==12.0.0
+pillow==10.4.0
 sqlparse==0.5.3
 weasyprint==63.0
-mercadopago
+mercadopago==2.2.3
+django-environ==0.11.2
+gunicorn==21.2.0
+whitenoise==6.6.0
+

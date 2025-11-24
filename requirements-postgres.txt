@@ -1,0 +1,6 @@
+# Optional PostgreSQL dependencies
+# Install these if you want to use PostgreSQL instead of SQLite:
+# pip install -r requirements-postgres.txt
+
+psycopg2-binary==2.9.9
+dj-database-url==2.1.0
