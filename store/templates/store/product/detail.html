@@ -74,7 +74,7 @@
     {% endif %}
     {% else %}
     <p class="text-gray-600">
-        <a href="{% url 'login' %}?next={{ request.path }}" class="text-indigo-600 hover:text-indigo-500">Inicia
+        <a href="{% url 'users:login' %}?next={{ request.path }}" class="text-indigo-600 hover:text-indigo-500">Inicia
             sesión</a> para dejar una reseña.
     </p>
     {% endif %}
