@@ -29,7 +29,7 @@ class OrderTests(TestCase):
             'postal_code': '12345',
             'city': 'New York'
         })
-        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, reverse('payment:process'))
         self.assertTrue(Order.objects.exists())
         self.assertTrue(OrderItem.objects.exists())
         

@@ -11,9 +11,23 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
+import os
+
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Initialize environ
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -43,6 +57,7 @@ INSTALLED_APPS = [
     'orders',
     'coupons',
     'custom_admin',
+    'payment',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +151,9 @@ LOGIN_URL = '/users/login/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# MercadoPago Settings
+MERCADOPAGO_PUBLIC_KEY = env('MERCADOPAGO_PUBLIC_KEY')
+MERCADOPAGO_ACCESS_TOKEN = env('MERCADOPAGO_ACCESS_TOKEN')
+
+
