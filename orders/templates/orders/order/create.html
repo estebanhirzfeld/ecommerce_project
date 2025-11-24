@@ -66,8 +66,10 @@
                             {{ field.label }}
                         </label>
                         <div class="mt-1">
-                            <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}"
+                            <input type="{{ field.field.widget.input_type }}" 
+                                name="{{ field.name }}"
                                 id="{{ field.id_for_label }}"
+                                value="{{ field.value|default:'' }}"
                                 class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2 border"
                                 required>
                         </div>
@@ -77,10 +79,9 @@
                     </div>
                     {% endfor %}
                 </div>
-
                 <div class="mt-10 border-t border-gray-200 pt-6">
                     <button type="submit"
-                        class="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500">
+                            class="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500">
                         Confirmar Pedido
                     </button>
                 </div>
