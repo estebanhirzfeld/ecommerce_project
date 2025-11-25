@@ -2,34 +2,34 @@ sequenceDiagram
     participant User
     participant View
     participant Cart
+    participant CouponSystem
     participant Database
 
-    Note over User, Database: Agregar Producto al Carrito
-    User->>View: POST /cart/add/{id}/
-    View->>Database: Product.objects.get(id=id)
-    Database-->>View: Product Instance
-    View->>Cart: cart.add(product)
-    Cart-->>View: Updated Cart
-    View-->>User: Redirect to Cart Detail
+    Note over User, Database: Aplicar Cupón
+    User->>View: POST /coupons/apply/
+    View->>Database: Coupon.objects.get(code=code)
+    alt Valid Coupon
+        Database-->>View: Coupon Instance
+        View->>Cart: cart.coupon = coupon
+        Cart-->>View: Updated Total
+        View-->>User: Success Message
+    else Invalid Coupon
+        Database-->>View: None
+        View-->>User: Error Message
+    end
 
     Note over User, Database: Realizar Compra
     User->>View: POST /orders/create/
-    View->>Cart: Get Cart Items
+    View->>Cart: Get Cart Items & Coupon
     View->>Database: Order.objects.create()
     loop For each item in Cart
         View->>Database: OrderItem.objects.create()
     end
     View->>Cart: cart.clear()
-    View-->>User: Render Order Created
+    View-->>User: Redirect to Payment
 
-    Note over User, Database: Login
-    User->>View: POST /users/login/
-    View->>Database: authenticate(username, password)
-    alt Valid Credentials
-        Database-->>View: User Object
-        View->>View: login(request, user)
-        View-->>User: Redirect to Home
-    else Invalid Credentials
-        Database-->>View: None
-        View-->>User: Show Error
-    end
+    Note over User, Database: Dejar Review
+    User->>View: POST /store/product/{id}/review/
+    View->>Database: Review.objects.create()
+    Database-->>View: Review Saved
+    View-->>User: Show Review on Product Page

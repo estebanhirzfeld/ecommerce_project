@@ -1,8 +1,12 @@
 erDiagram
     AUTH_USER ||--o{ PROFILE : has
     AUTH_USER ||--o{ ORDER : places
+    AUTH_USER ||--o{ REVIEW : writes
+    AUTH_USER ||--o| WISHLIST : owns
     CATEGORY ||--o{ PRODUCT : contains
     PRODUCT ||--o{ ORDER_ITEM : included_in
+    PRODUCT ||--o{ REVIEW : receives
+    PRODUCT }|--|{ WISHLIST : in
     ORDER ||--o{ ORDER_ITEM : contains
 
     AUTH_USER {
@@ -33,6 +37,29 @@ erDiagram
         decimal price
         text description
         boolean available
+    }
+
+    REVIEW {
+        int id PK
+        int product_id FK
+        int user_id FK
+        int rating
+        text comment
+        boolean active
+    }
+
+    WISHLIST {
+        int id PK
+        int user_id FK
+    }
+
+    COUPON {
+        int id PK
+        string code
+        datetime valid_from
+        datetime valid_to
+        int discount
+        boolean active
     }
 
     ORDER {

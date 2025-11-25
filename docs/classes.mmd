@@ -23,11 +23,32 @@ classDiagram
         +category: Category
         +name: String
         +slug: String
-        +image: Image
+        +image: URL
         +description: Text
         +price: Decimal
         +available: Boolean
         +get_absolute_url()
+    }
+
+    class Review {
+        +product: Product
+        +user: User
+        +rating: Integer
+        +comment: Text
+        +active: Boolean
+    }
+
+    class Wishlist {
+        +user: User
+        +products: List~Product~
+    }
+
+    class Coupon {
+        +code: String
+        +valid_from: DateTime
+        +valid_to: DateTime
+        +discount: Integer
+        +active: Boolean
     }
 
     class Cart {
@@ -57,7 +78,11 @@ classDiagram
     }
 
     User "1" -- "1" Profile
+    User "1" -- "1" Wishlist
+    User "1" -- "*" Review
+    User "1" -- "*" Order
     Category "1" -- "*" Product
+    Product "1" -- "*" Review
+    Wishlist "1" -- "*" Product
     Order "1" -- "*" OrderItem
     Product "1" -- "*" OrderItem
-    User "1" -- "*" Order

@@ -2,6 +2,8 @@
 
 Este proyecto es un sistema de comercio electrónico desarrollado con Django.
 
+**Demo desplegada**: [https://ecommerce-project-z9w3.onrender.com/](https://ecommerce-project-z9w3.onrender.com/)
+
 ## Instalación y Ejecución
 
 1.  Clonar el repositorio.
@@ -31,16 +33,13 @@ Este proyecto es un sistema de comercio electrónico desarrollado con Django.
 ## Estructura del Proyecto
 
 -   `config/`: Configuración principal del proyecto.
--   `store/`: Gestión de productos y categorías.
+-   `store/`: Gestión de productos, categorías, reviews y wishlist.
 -   `cart/`: Lógica del carrito de compras (basado en sesiones).
 -   `users/`: Gestión de usuarios (registro, login, perfil, historial).
 -   `orders/`: Gestión de órdenes de compra.
 -   `coupons/`: Sistema de cupones de descuento.
--   `custom_admin/`: Panel de administración personalizado.
--   `payment/`: Integración con MercadoPago.
+-   `payment/`: Integración con pasarelas de pago (simulado/MercadoPago).
 -   `docs/`: Documentación y diagramas (Mermaid).
--   `.env.example`: Plantilla de variables de entorno.
--   `Procfile`: Configuración para plataformas de deployment.
 -   `DEPLOYMENT.md`: Guía completa de deployment.
 
 ## Decisiones de Diseño
