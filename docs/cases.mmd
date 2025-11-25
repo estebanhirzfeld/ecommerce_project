@@ -1,24 +1,26 @@
-usecaseDiagram
-    actor "Usuario Visitante" as Visitor
-    actor "Usuario Registrado" as User
-    actor "Administrador" as Admin
+graph LR
+    subgraph Actors
+        Visitor["Usuario Visitante"]
+        User["Usuario Registrado"]
+        Admin["Administrador"]
+    end
 
-    package "Sistema de Carrito de Compras" {
-        usecase "Registrarse" as UC1
-        usecase "Iniciar Sesión" as UC2
-        usecase "Buscar Productos" as UC3
-        usecase "Ver Detalle de Producto" as UC4
-        usecase "Agregar al Carrito" as UC5
-        usecase "Gestionar Carrito" as UC6
-        usecase "Realizar Compra" as UC7
-        usecase "Ver Historial de Compras" as UC8
-        usecase "Gestionar Productos" as UC9
-        usecase "Gestionar Órdenes" as UC10
-        usecase "Aplicar Cupón" as UC11
-        usecase "Dejar Review" as UC12
-        usecase "Gestionar Wishlist" as UC13
-        usecase "Administrar Cupones" as UC14
-    }
+    subgraph System["Sistema de Carrito de Compras"]
+        UC1(("Registrarse"))
+        UC2(("Iniciar Sesión"))
+        UC3(("Buscar Productos"))
+        UC4(("Ver Detalle de Producto"))
+        UC5(("Agregar al Carrito"))
+        UC6(("Gestionar Carrito"))
+        UC7(("Realizar Compra"))
+        UC8(("Ver Historial de Compras"))
+        UC9(("Gestionar Productos"))
+        UC10(("Gestionar Órdenes"))
+        UC11(("Aplicar Cupón"))
+        UC12(("Dejar Review"))
+        UC13(("Gestionar Wishlist"))
+        UC14(("Administrar Cupones"))
+    end
 
     Visitor --> UC1
     Visitor --> UC2
@@ -43,5 +45,9 @@ usecaseDiagram
     Admin --> UC10
     Admin --> UC14
 
-    UC7 ..> UC2 : <<include>>
-    UC7 ..> UC11 : <<extend>>
+    UC7 -.->|include| UC2
+    UC7 -.->|extend| UC11
+
+    style Visitor fill:#f9f,stroke:#333,stroke-width:2px
+    style User fill:#ccf,stroke:#333,stroke-width:2px
+    style Admin fill:#ff9,stroke:#333,stroke-width:2px
