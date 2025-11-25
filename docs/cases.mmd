@@ -1,4 +1,4 @@
-useCaseDiagram
+usecaseDiagram
     actor "Usuario Visitante" as Visitor
     actor "Usuario Registrado" as User
     actor "Administrador" as Admin
@@ -14,6 +14,10 @@ useCaseDiagram
         usecase "Ver Historial de Compras" as UC8
         usecase "Gestionar Productos" as UC9
         usecase "Gestionar Órdenes" as UC10
+        usecase "Aplicar Cupón" as UC11
+        usecase "Dejar Review" as UC12
+        usecase "Gestionar Wishlist" as UC13
+        usecase "Administrar Cupones" as UC14
     }
 
     Visitor --> UC1
@@ -30,9 +34,14 @@ useCaseDiagram
     User --> UC6
     User --> UC7
     User --> UC8
+    User --> UC11
+    User --> UC12
+    User --> UC13
 
     Admin --> UC2
     Admin --> UC9
     Admin --> UC10
+    Admin --> UC14
 
     UC7 ..> UC2 : <<include>>
+    UC7 ..> UC11 : <<extend>>
